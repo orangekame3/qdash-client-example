@@ -5,7 +5,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 from dotenv import load_dotenv
-from qdash.client import QDashApiError, QDashClient, QDashConfig
+from qdash.client import QDashApiError, QDashClient
 
 load_dotenv()
 
@@ -14,7 +14,7 @@ QID: str | None = None
 LOOKBACK_DAYS = 30
 OUTPUT_DIR = Path("outputs")
 
-client = QDashClient(QDashConfig.from_env())
+client = QDashClient.from_env()
 try:
     chips_response = client.list_chips()
     chips = chips_response.chips
@@ -22,16 +22,7 @@ try:
     for chip in chips:
         print(f"- {chip.chip_id} ({chip.activity_status})")
 
-    chip_id = None
-    for chip in chips:
-        if str(chip.activity_status) == "active":
-            chip_id = chip.chip_id
-            break
-    if chip_id is None and chips:
-        chip_id = chips[0].chip_id
-    if chip_id is None:
-        raise RuntimeError("No chips found.")
-
+    chip_id = client.get_default_chip_id()
     end_at_value = datetime.now(UTC)
     start_at_value = end_at_value - timedelta(days=LOOKBACK_DAYS)
     start_at = start_at_value.isoformat().replace("+00:00", "Z")

@@ -421,15 +421,15 @@ wheels = [
 
 [[package]]
 name = "qdash-client"
-version = "0.1.3"
+version = "0.1.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e9/69/afbcb564c4b450b9f781f6ea74f16dbe1b6f308cfe23b392ce4fb6999ba9/qdash_client-0.1.3.tar.gz", hash = "sha256:2e79a7393ce3e6c31a1084722b16cf10cc2476f704bd7601ece592dafe9b664a", size = 35676, upload-time = "2026-06-15T13:47:08.709Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/7d/b8650b70fa89707597f5b2c98b80f0c0626d2f47b2b0b99c0f92d499b582/qdash_client-0.1.5.tar.gz", hash = "sha256:af7d4de0b37c87224823c7ab4d0badffcdcbe5cf8da46cee27bcfb8808ecec89", size = 36140, upload-time = "2026-06-15T14:40:58.436Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/74/e3/b8785b7ca82de2f86e626e16a9b2e1d1d7cfc7bd461c22c9f86baa9b0410/qdash_client-0.1.3-py3-none-any.whl", hash = "sha256:4890a37f93c1681dc97102cd6123aa93820e879986a9c77eb8d96eccaa9b4ab6", size = 37958, upload-time = "2026-06-15T13:47:07.655Z" },
+    { url = "https://files.pythonhosted.org/packages/07/4b/78299a64f6113b1efd5f6d8bad4fb24d283390e243f41bfe6ee416581624/qdash_client-0.1.5-py3-none-any.whl", hash = "sha256:c7d675178791e8e164cdd84462cbc8fa8bd982039b3f62978e0de33b57d54358", size = 38474, upload-time = "2026-06-15T14:40:57.073Z" },
 ]
 
 [[package]]
@@ -446,7 +446,7 @@ dependencies = [
 requires-dist = [
     { name = "matplotlib", specifier = ">=3.8.0" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
-    { name = "qdash-client", specifier = ">=0.1.3" },
+    { name = "qdash-client", specifier = ">=0.1.5" },
 ]
 
 [[package]]

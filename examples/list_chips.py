@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 from dotenv import load_dotenv
-from qdash.client import QDashApiError, QDashClient, QDashConfig
+from qdash.client import QDashApiError, QDashClient
 
 load_dotenv()
 
-client = QDashClient(QDashConfig.from_env())
+client = QDashClient.from_env()
 try:
     chips = client.list_chips()
     print(f"chips: {chips.total}")

@@ -3,11 +3,11 @@ from __future__ import annotations
 import asyncio
 
 from dotenv import load_dotenv
-from qdash.client import QDashApiError, QDashClient, QDashConfig
+from qdash.client import QDashApiError, QDashClient
 
 load_dotenv()
 
-client = QDashClient(QDashConfig.from_env())
+client = QDashClient.from_env()
 try:
     config = asyncio.run(client.get_metrics_config_async())
     print(f"top-level keys: {', '.join(sorted(config.keys()))}")

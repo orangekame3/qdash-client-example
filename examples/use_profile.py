@@ -1,16 +1,15 @@
 from __future__ import annotations
 
-from qdash.client import QDashApiError, QDashClient, QDashConfig, QDashConfigError
+from qdash.client import QDashApiError, QDashClient, QDashConfigError
 
 PROFILE = "local"
 
 try:
-    config = QDashConfig.from_file(profile=PROFILE)
-    client = QDashClient(config)
+    client = QDashClient.from_profile(PROFILE)
     try:
         chips = client.list_chips()
         print(f"profile: {PROFILE}")
-        print(f"base_url: {config.base_url}")
+        print(f"base_url: {client.config.base_url}")
         print(f"chips: {chips.total}")
         for chip in chips.chips:
             print(f"- {chip.chip_id} ({chip.activity_status})")

@@ -3,11 +3,11 @@ from __future__ import annotations
 import asyncio
 
 from dotenv import load_dotenv
-from qdash.client import QDashApiError, QDashClient, QDashConfig
+from qdash.client import QDashApiError, QDashClient
 
 load_dotenv()
 
-client = QDashClient(QDashConfig.from_env())
+client = QDashClient.from_env()
 try:
     chips = asyncio.run(client.list_chips_async())
     print(f"chips: {chips.total}")

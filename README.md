@@ -24,7 +24,7 @@ value, such as `https://your-qdash-instance/api`.
 
 ## Examples
 
-Run the quickstart first. It lists chips, selects an active chip, fetches the last 30 days of
+Run the quickstart first. It lists chips, selects the default chip, fetches the last 30 days of
 `t1`, and saves a violin plot under `outputs/`.
 
 ```bash
@@ -57,7 +57,7 @@ LOOKBACK_DAYS = 30
 
 ## Profiles
 
-`qdash-client>=0.1.3` can save settings as a reusable profile.
+`qdash-client>=0.1.5` can save settings as a reusable profile.
 
 Edit the constants in `examples/save_profile.py`, then run:
 
@@ -85,7 +85,7 @@ The default path is `$XDG_CONFIG_HOME/qdash/config.ini`, or `~/.config/qdash/con
 Read a saved profile with:
 
 ```python
-config = QDashConfig.from_file(profile="local")
+client = QDashClient.from_profile("local")
 ```
 
 Use profiles when each environment has a different URL or token. You can generate a profile with
