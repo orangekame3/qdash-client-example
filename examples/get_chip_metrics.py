@@ -3,22 +3,21 @@ from __future__ import annotations
 from qdash.client import QDashApiError
 
 from common import create_client, print_api_error, select_active_chip_id
-from get_task_results_timeseries import fetch_timeseries, plot_distribution
 
 
 def main() -> None:
     client = create_client()
     try:
-        chips = client.list_chips()
-        print(f"chips: {chips.total}")
-        for chip in chips.chips:
-            print(f"- {chip.chip_id} ({chip.activity_status})")
         chip_id = select_active_chip_id(client)
+        metrics = client.get_chip_metrics(chip_id)
+        print(f"chip: {metrics.chip_id}")
+        print(f"qubit metric groups: {len(metrics.qubit_metrics)}")
+        print(f"coupling metric groups: {len(metrics.coupling_metrics)}")
+        for metric_name, values in sorted(metrics.qubit_metrics.items())[:5]:
+            entity_ids = ", ".join(sorted(values.keys())[:5])
+            print(f"- {metric_name}: {entity_ids}")
     finally:
         client.close()
-
-    series = fetch_timeseries(chip_id)
-    plot_distribution(chip_id, series)
 
 
 if __name__ == "__main__":

@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from qdash.client import QDashApiError
 
-from common import create_client, print_api_error, select_active_chip_id
-from get_task_results_timeseries import fetch_timeseries, plot_distribution
+from common import create_client, print_api_error
 
 
 def main() -> None:
@@ -13,12 +12,8 @@ def main() -> None:
         print(f"chips: {chips.total}")
         for chip in chips.chips:
             print(f"- {chip.chip_id} ({chip.activity_status})")
-        chip_id = select_active_chip_id(client)
     finally:
         client.close()
-
-    series = fetch_timeseries(chip_id)
-    plot_distribution(chip_id, series)
 
 
 if __name__ == "__main__":
