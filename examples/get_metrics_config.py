@@ -1,24 +1,18 @@
 from __future__ import annotations
 
-from qdash.client import QDashApiError
+from dotenv import load_dotenv
+from qdash.client import QDashApiError, QDashClient, QDashConfig
 
-from common import create_client, print_api_error
+load_dotenv()
 
-
-def main() -> None:
-    client = create_client()
-    try:
-        config = client.get_metrics_config()
-        print(f"top-level keys: {', '.join(sorted(config.keys()))}")
-        for key, value in sorted(config.items())[:5]:
-            print(f"- {key}: {type(value).__name__}")
-    finally:
-        client.close()
-
-
-if __name__ == "__main__":
-    try:
-        main()
-    except QDashApiError as exc:
-        print_api_error(exc)
-        raise SystemExit(1) from exc
+client = QDashClient(QDashConfig.from_env())
+try:
+    config = client.get_metrics_config()
+    print(f"top-level keys: {', '.join(sorted(config.keys()))}")
+    for key, value in sorted(config.items())[:5]:
+        print(f"- {key}: {type(value).__name__}")
+except QDashApiError as exc:
+    print(f"QDash API error: status={exc.status_code} message={exc}")
+    raise SystemExit(1) from exc
+finally:
+    client.close()

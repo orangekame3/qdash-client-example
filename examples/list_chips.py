@@ -1,24 +1,18 @@
 from __future__ import annotations
 
-from qdash.client import QDashApiError
+from dotenv import load_dotenv
+from qdash.client import QDashApiError, QDashClient, QDashConfig
 
-from common import create_client, print_api_error
+load_dotenv()
 
-
-def main() -> None:
-    client = create_client()
-    try:
-        chips = client.list_chips()
-        print(f"chips: {chips.total}")
-        for chip in chips.chips:
-            print(f"- {chip.chip_id} ({chip.activity_status})")
-    finally:
-        client.close()
-
-
-if __name__ == "__main__":
-    try:
-        main()
-    except QDashApiError as exc:
-        print_api_error(exc)
-        raise SystemExit(1) from exc
+client = QDashClient(QDashConfig.from_env())
+try:
+    chips = client.list_chips()
+    print(f"chips: {chips.total}")
+    for chip in chips.chips:
+        print(f"- {chip.chip_id} ({chip.activity_status})")
+except QDashApiError as exc:
+    print(f"QDash API error: status={exc.status_code} message={exc}")
+    raise SystemExit(1) from exc
+finally:
+    client.close()
