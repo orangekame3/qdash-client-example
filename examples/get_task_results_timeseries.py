@@ -1,39 +1,50 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from qdash.client import QDashApiError, TimeSeriesData
+from dotenv import load_dotenv
+from qdash.client import QDashApiError, QDashClient, QDashConfig
 
-from common import create_client, date_range_for_last_days, print_api_error, select_active_chip_id
+load_dotenv()
 
 PARAMETER = "t1"
 QID: str | None = None
 LOOKBACK_DAYS = 30
 OUTPUT_DIR = Path("outputs")
 
+client = QDashClient(QDashConfig.from_env())
+try:
+    chips = client.list_chips().chips
+    chip_id = None
+    for chip in chips:
+        if str(chip.activity_status) == "active":
+            chip_id = chip.chip_id
+            break
+    if chip_id is None and chips:
+        chip_id = chips[0].chip_id
+    if chip_id is None:
+        raise RuntimeError("No chips found.")
 
-def fetch_timeseries(chip_id: str) -> TimeSeriesData:
-    client = create_client()
-    try:
-        start_at, end_at = date_range_for_last_days(LOOKBACK_DAYS)
-        return client.get_task_results_timeseries(
-            chip_id=chip_id,
-            parameter=PARAMETER,
-            qid=QID,
-            start_at=start_at,
-            end_at=end_at,
-        )
-    finally:
-        client.close()
+    end_at_value = datetime.now(UTC)
+    start_at_value = end_at_value - timedelta(days=LOOKBACK_DAYS)
+    start_at = start_at_value.isoformat().replace("+00:00", "Z")
+    end_at = end_at_value.isoformat().replace("+00:00", "Z")
 
+    series = client.get_task_results_timeseries(
+        chip_id=chip_id,
+        parameter=PARAMETER,
+        qid=QID,
+        start_at=start_at,
+        end_at=end_at,
+    )
 
-def plot_distribution(chip_id: str, series: TimeSeriesData) -> None:
     point_count = sum(len(points) for points in series.data.values())
     print(f"time series: chip={chip_id} parameter={PARAMETER} points={point_count}")
     if point_count == 0:
         print("plot: skipped; no data points found")
-        return
+        raise SystemExit(0)
 
     labels: list[str] = []
     values: list[list[float | int]] = []
@@ -57,22 +68,8 @@ def plot_distribution(chip_id: str, series: TimeSeriesData) -> None:
     fig.savefig(output_path, dpi=150)
     plt.close(fig)
     print(f"plot: {output_path}")
-
-
-def main() -> None:
-    client = create_client()
-    try:
-        chip_id = select_active_chip_id(client)
-    finally:
-        client.close()
-
-    series = fetch_timeseries(chip_id)
-    plot_distribution(chip_id, series)
-
-
-if __name__ == "__main__":
-    try:
-        main()
-    except QDashApiError as exc:
-        print_api_error(exc)
-        raise SystemExit(1) from exc
+except QDashApiError as exc:
+    print(f"QDash API error: status={exc.status_code} message={exc}")
+    raise SystemExit(1) from exc
+finally:
+    client.close()
