@@ -1,6 +1,8 @@
 .env
+qdash_config.ini
 .venv/
 outputs/
 __pycache__/
 *.pyc
 .python-version
+tmp

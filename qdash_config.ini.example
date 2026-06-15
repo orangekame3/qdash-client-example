@@ -1,0 +1,20 @@
+[local]
+base_url = http://localhost:5715
+api_token = your-local-api-token
+project_id =
+cf_access_client_id =
+cf_access_client_secret =
+
+[staging]
+base_url = https://staging-qdash.example.com/api
+api_token = your-staging-api-token
+project_id =
+cf_access_client_id = your-staging-cf-client-id
+cf_access_client_secret = your-staging-cf-client-secret
+
+[prod]
+base_url = https://qdash.example.com/api
+api_token = your-prod-api-token
+project_id =
+cf_access_client_id = your-prod-cf-client-id
+cf_access_client_secret = your-prod-cf-client-secret
