@@ -22,16 +22,30 @@ Edit `.env` with your QDash API endpoint and token.
 `http://localhost:5715`. If your deployment exposes the API under a prefix, include it in the
 value, such as `https://your-qdash-instance/api`.
 
-## Run
+## Examples
 
-List chips, select an active chip, fetch the last 30 days of `t1`, and save a violin plot under
-`outputs/`.
+Run the quickstart first. It lists chips, selects an active chip, fetches the last 30 days of
+`t1`, and saves a violin plot under `outputs/`.
 
 ```bash
 uv run python examples/quickstart.py
 ```
 
-Change the plotted metric by editing the constants at the top of `examples/quickstart.py`.
+Each public `QDashClient` method also has a small script.
+
+```bash
+uv run python examples/list_chips.py
+uv run python examples/get_chip_metrics.py
+uv run python examples/get_metrics_config.py
+uv run python examples/get_task_results_timeseries.py
+uv run python examples/normalize_chip_metrics.py
+uv run python examples/async_list_chips.py
+uv run python examples/async_get_metrics_config.py
+uv run python examples/async_get_task_results_timeseries.py
+```
+
+Change the plotted metric by editing the constants at the top of
+`examples/get_task_results_timeseries.py`.
 
 ```python
 PARAMETER = "t1"
