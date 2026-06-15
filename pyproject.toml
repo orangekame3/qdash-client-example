@@ -1,0 +1,14 @@
+[project]
+name = "qdash-client-example"
+version = "0.1.0"
+description = "Example scripts for qdash-client"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "matplotlib>=3.8.0",
+    "python-dotenv>=1.0.1",
+    "qdash-client>=0.1.0",
+]
+
+[tool.uv]
+package = false
